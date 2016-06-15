@@ -1,0 +1,22 @@
+e:\users\documents\visual studio 2015\Projects\ScreenFlow\ScreenFlow\bin\Debug\ScreenFlow.exe.config
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.csprojResolveAssemblyReference.cache
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\MainWindow.g.cs
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\App.g.cs
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow_MarkupCompile.cache
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow_MarkupCompile.lref
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\Interop.IWshRuntimeLibrary.dll
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.csproj.ResolveComReference.cache
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\bin\Debug\ScreenFlow.exe
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\bin\Debug\ScreenFlow.pdb
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\MainWindow.baml
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.g.resources
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.Properties.Resources.resources
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.csproj.GenerateResource.Cache
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.exe
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.pdb
+E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\bin\Debug\Supremes.dll
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\bin\Debug\ScreenFlow.exe.config
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Debug\Interop.IWshRuntimeLibrary.dll
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.csproj.ResolveComReference.cache
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.exe
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Debug\ScreenFlow.pdb

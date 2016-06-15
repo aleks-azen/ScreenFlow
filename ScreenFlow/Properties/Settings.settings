@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScreenFlow.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="sunrise" Type="System.TimeSpan" Scope="User">
+      <Value Profile="(Default)">07:00:00</Value>
+    </Setting>
+    <Setting Name="sunset" Type="System.TimeSpan" Scope="User">
+      <Value Profile="(Default)">19:00:00</Value>
+    </Setting>
+    <Setting Name="dayImage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Enter Daytime Image Path</Value>
+    </Setting>
+    <Setting Name="nightImage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Enter Nightime Image Path</Value>
+    </Setting>
+    <Setting Name="state" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ny</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
