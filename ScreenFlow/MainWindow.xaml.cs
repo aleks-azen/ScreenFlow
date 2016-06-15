@@ -276,7 +276,7 @@ namespace ScreenFlow
         static StateArray()
         {
             states = new List<US_State>(50);
-            states.Add(new US_State("AL", "Alabama"));
+            states.Add(new US_State("AL", "Alabasa"));
             states.Add(new US_State("AK", "Alaska"));
             states.Add(new US_State("AZ", "Arizona"));
             states.Add(new US_State("AR", "Arkansas"));
