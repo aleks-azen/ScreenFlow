@@ -50,19 +50,22 @@ namespace ScreenFlow
             //Thread main = new Thread(new ThreadStart(mainLoop));
             UpdateWallpaper();
             CreateShortcut();
-            
+
             wallpaperUpdateTimer.Elapsed += new ElapsedEventHandler(WallpaperTimerElapsed);
             wallpaperUpdateTimer.AutoReset = false;
             wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
             wallpaperUpdateTimer.Start();
+
             webReloadTimer.Elapsed += new ElapsedEventHandler(WebTimerElapsed);
             webReloadTimer.AutoReset = false;
             webReloadTimer.Interval = TimeSpan.FromSeconds(5).TotalMilliseconds;
             webReloadTimer.Start();
+
             InitializeComponent();
+
             Image1Box.Text = Properties.Settings.Default.dayImage;
             Image2Box.Text = Properties.Settings.Default.nightImage;
-            ni.Icon = new System.Drawing.Icon(@"E:\Users\Downloads\nightttime.ico");
+            ni.Icon = Properties.Resources._1466070757_My_Computer;
             ni.DoubleClick +=
                 delegate (object sender, EventArgs args)
                 {
@@ -70,9 +73,15 @@ namespace ScreenFlow
                     this.WindowState = WindowState.Normal;
                     ni.Visible = false;
                 };
-            ni.Visible = true;
-            this.Hide();
-
+            if (System.IO.File.Exists(Properties.Settings.Default.nightImage) && System.IO.File.Exists(Properties.Settings.Default.dayImage))
+            {
+                ni.Visible = true;
+                this.Hide();
+            }
+            else
+            {
+                ni.Visible = false;
+            }
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -87,10 +96,27 @@ namespace ScreenFlow
         }
         #region helpers
 
-        public void UpdateWallpaper()
+        public Boolean UpdateWallpaper()
         {
-            if (CheckTime() == timestate.Night) SetWallpaper(Properties.Settings.Default.nightImage);
-            else SetWallpaper(Properties.Settings.Default.dayImage);
+            if (CheckTime() == timestate.Night)
+            {
+                if (System.IO.File.Exists(Properties.Settings.Default.nightImage))
+                {
+                    SetWallpaper(Properties.Settings.Default.nightImage);
+                    if (System.IO.File.Exists(Properties.Settings.Default.dayImage))
+                        return true;
+                }
+            }
+            else
+            {
+                if (System.IO.File.Exists(Properties.Settings.Default.dayImage))
+                {
+                    SetWallpaper(Properties.Settings.Default.dayImage);
+                    if (System.IO.File.Exists(Properties.Settings.Default.nightImage))
+                        return true;
+                }
+            }
+            return false;
         }
         public static void SetWallpaper(String path)
         {
@@ -142,7 +168,6 @@ namespace ScreenFlow
             string shortcutAddress = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\ScreenFlow.lnk";
             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
             shortcut.Description = "Shortcut";
-            shortcut.Hotkey = "Ctrl+Shift+N";
             shortcut.TargetPath = System.Windows.Forms.Application.StartupPath + @"\ScreenFlow.exe";
             shortcut.Save();
             StateArray.states.ElementAt(6);
@@ -213,7 +238,31 @@ namespace ScreenFlow
             Properties.Settings.Default.dayImage = Image1Box.Text;
             Properties.Settings.Default.state = Image3Box.Text;
             Properties.Settings.Default.Save();
-            UpdateWallpaper();
+            if (UpdateWallpaper())
+            {
+                try
+                {
+                    if (!System.IO.Directory.Exists(System.Windows.Forms.Application.StartupPath + @"\Wallpapers"))
+                    {
+                        System.IO.Directory.CreateDirectory(System.Windows.Forms.Application.StartupPath + @"\Wallpapers");
+                    }
+                    System.IO.File.Copy(Properties.Settings.Default.dayImage, System.Windows.Forms.Application.StartupPath + @"\Wallpapers\" + System.IO.Path.GetFileName(Properties.Settings.Default.dayImage), true);
+                    System.IO.File.Copy(Properties.Settings.Default.nightImage, System.Windows.Forms.Application.StartupPath + @"\Wallpapers\" + System.IO.Path.GetFileName(Properties.Settings.Default.nightImage), true);
+                    Properties.Settings.Default.nightImage = System.Windows.Forms.Application.StartupPath + @"\Wallpapers\" + System.IO.Path.GetFileName(Properties.Settings.Default.nightImage);
+                    Properties.Settings.Default.dayImage = System.Windows.Forms.Application.StartupPath + @"\Wallpapers\" + System.IO.Path.GetFileName(Properties.Settings.Default.dayImage);
+                    Properties.Settings.Default.Save();
+                    Image2Box.Text = Properties.Settings.Default.nightImage;
+                    Image1Box.Text = Properties.Settings.Default.dayImage;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("One of the paths you entered was invalid");
+            }
         }
 
         private void Image2Button_Click(object sender, RoutedEventArgs e)

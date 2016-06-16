@@ -10,19 +10,19 @@
         <Grid Height="104">
             <Label x:Name="Image1Label" Content="Day Image" Margin="0,0,466,67" />
 
-            <TextBox x:Name="Image1Box" Text="Enter Day Image Path" Height="23" TextWrapping="Wrap" Margin="0,33,200,44" />
-            <Button x:Name="Image1Button" Content="Browse" HorizontalAlignment="Left" Margin="373,33,0,0" VerticalAlignment="Top" Width="80" Height="23" Click="Image1Button_Click"/>
+            <TextBox x:Name="Image1Box" Text="Enter Day Image Path" TextWrapping="Wrap" Margin="0,37,200,48" UndoLimit="99" />
+            <Button x:Name="Image1Button" Content="Browse" HorizontalAlignment="Left" Margin="373,37,0,0" VerticalAlignment="Top" Width="80" Height="19" Click="Image1Button_Click"/>
         </Grid>
         <Grid Height="100">
             <Label x:Name="Image2Label" Content="Night Image" Margin="0,0,464,67" />
 
-            <TextBox x:Name="Image2Box" Text="Enter Night Image Path" Height="23" TextWrapping="Wrap" Margin="0,33,200,44" />
-            <Button x:Name="Image2Button" Content="Browse" HorizontalAlignment="Left" Margin="373,33,0,0" VerticalAlignment="Top" Width="80" Height="23" Click="Image2Button_Click"/>
+            <TextBox x:Name="Image2Box" Text="Enter Night Image Path" TextWrapping="Wrap" Margin="0,38,200,44" />
+            <Button x:Name="Image2Button" Content="Browse" HorizontalAlignment="Left" Margin="373,38,0,0" VerticalAlignment="Top" Width="80" Height="18" Click="Image2Button_Click"/>
         </Grid>
         <Grid>
             <Label x:Name="StateLabel" Content="Enter State Abbreviation (E.G: NY): " Margin="0,0,311,0" />
             <TextBox x:Name="Image3Box" Text="NY" Height="23" TextWrapping="Wrap" Margin="205,4,300,-1"/>
-        
+
 
         </Grid>
         <Button Margin="10"  x:Name="button" Content="Save Settings" Click="SaveChangesButton_Click"/>
