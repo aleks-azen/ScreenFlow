@@ -17,5 +17,8 @@
     <Setting Name="state" Type="System.String" Scope="User">
       <Value Profile="(Default)">ny</Value>
     </Setting>
+    <Setting Name="runAtStart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

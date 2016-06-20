@@ -40,17 +40,26 @@ namespace ScreenFlow
         private static readonly UInt32 SPI_SETDESKWALLPAPER = 0x14;
         private static readonly UInt32 SPIF_UPDATEINIFILE = 0x01;
         private static readonly UInt32 SPIF_SENDWININICHANGE = 0x02;
+        private static readonly string sunPrefix = "http://www.timeanddate.com/sun/usa/";
+        public string sunSufix = "New-York";
         public System.Timers.Timer webReloadTimer = new System.Timers.Timer();
         public System.Timers.Timer wallpaperUpdateTimer = new System.Timers.Timer();
-        public System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
-
+        public NotifyIcon ni = new NotifyIcon();
+        public System.Windows.Forms.ContextMenuStrip iconMenu;
+        public DateTime updateTime = new DateTime(1, 1, 1);
 
         public MainWindow()
         {
-            //Thread main = new Thread(new ThreadStart(mainLoop));
-            UpdateWallpaper();
-            CreateShortcut();
+            //Prevents multiple versions from running
+            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+            {
+                System.Windows.MessageBox.Show("Application already Running - Look in your system tray");
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
 
+            //initializations
+            UpdateWallpaper();
+            StateMapper(Properties.Settings.Default.state);
             wallpaperUpdateTimer.Elapsed += new ElapsedEventHandler(WallpaperTimerElapsed);
             wallpaperUpdateTimer.AutoReset = false;
             wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
@@ -60,19 +69,52 @@ namespace ScreenFlow
             webReloadTimer.AutoReset = false;
             webReloadTimer.Interval = TimeSpan.FromSeconds(5).TotalMilliseconds;
             webReloadTimer.Start();
-
             InitializeComponent();
 
+            //Rechecks appstatus on wake from sleep because update timers are thrown off sometimes
+            Microsoft.Win32.SystemEvents.PowerModeChanged += delegate (object s, Microsoft.Win32.PowerModeChangedEventArgs e)
+            {
+                if (e.Mode == Microsoft.Win32.PowerModes.Resume)
+                {
+                    UpdateWallpaper();
+                    wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
+                    DateTime wakeTime = System.DateTime.Now;
+                    TimeSpan timePassed = wakeTime.Subtract(updateTime);
+                    if (webReloadTimer.Interval > TimeSpan.FromMinutes(5).TotalMilliseconds)
+                    {
+                        if (webReloadTimer.Interval - timePassed.TotalMilliseconds > 0)
+                            webReloadTimer.Interval = webReloadTimer.Interval - timePassed.TotalMilliseconds;
+                        else webReloadTimer.Interval = 1;
+                    }
+                }
+            };
+
+            //set initial values
+            StartupBox.IsChecked = Properties.Settings.Default.runAtStart;
             Image1Box.Text = Properties.Settings.Default.dayImage;
             Image2Box.Text = Properties.Settings.Default.nightImage;
+
+            iconMenu = new System.Windows.Forms.ContextMenuStrip();
+            System.Windows.Forms.ToolStripMenuItem showOption = new System.Windows.Forms.ToolStripMenuItem();
+            showOption.Text = "Show";
+            showOption.Click += new EventHandler(ShowApp);
+            iconMenu.Items.Add(showOption);
+
+            System.Windows.Forms.ToolStripMenuItem exitOption = new System.Windows.Forms.ToolStripMenuItem();
+            exitOption.Text = "Exit";
+            exitOption.Click += delegate (object sender, EventArgs args)
+            {
+                ni.Visible = false;
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            };
+            iconMenu.Items.Add(exitOption);
+
+            //System tray settings
             ni.Icon = Properties.Resources._1466070757_My_Computer;
-            ni.DoubleClick +=
-                delegate (object sender, EventArgs args)
-                {
-                    this.Show();
-                    this.WindowState = WindowState.Normal;
-                    ni.Visible = false;
-                };
+            ni.ContextMenuStrip = iconMenu;
+            ni.DoubleClick += new EventHandler(ShowApp);
+
+            //Opens settings menu on startup if any settings are invalid, else minimizes app to system tray
             if (System.IO.File.Exists(Properties.Settings.Default.nightImage) && System.IO.File.Exists(Properties.Settings.Default.dayImage))
             {
                 ni.Visible = true;
@@ -84,6 +126,8 @@ namespace ScreenFlow
             }
         }
 
+
+        //sets behavior for minimizing to system tray
         protected override void OnStateChanged(EventArgs e)
         {
             if (WindowState == System.Windows.WindowState.Minimized)
@@ -95,7 +139,170 @@ namespace ScreenFlow
             base.OnStateChanged(e);
         }
         #region helpers
+        public void StateMapper(string stateAbbreviation)
+        {
+            stateAbbreviation = stateAbbreviation.ToLower();
+            switch (stateAbbreviation)
+            {
+                case "al":
+                    sunSufix = "birmingham";
+                    break;
+                case "ak":
+                    sunSufix = "kenai";
+                    break;
+                case "az":
+                    sunSufix = "wellton";
+                    break;
+                case "ar":
+                    sunSufix = "little-rock";
+                    break;
+                case "ca":
+                    sunSufix = "hollywood";
+                    break;
+                case "co":
+                    sunSufix = "denver";
+                    break;
+                case "ct":
+                    sunSufix = "new-haven";
+                    break;
+                case "de":
+                    sunSufix = "dover";
+                    break;
+                case "dc":
+                    sunSufix = "washington-dc";
+                    break;
+                case "fl":
+                    sunSufix = "jacksonville-beach";
+                    break;
+                case "ga":
+                    sunSufix = "braselton";
+                    break;
+                case "hi":
+                    sunSufix = "wailuku";
+                    break;
+                case "id":
+                    sunSufix = "lewiston";
+                    break;
+                case "il":
+                    sunSufix = "chicago";
+                    break;
+                case "in":
+                    sunSufix = "elkhart";
+                    break;
+                case "ia":
+                    sunSufix = "des-moines";
+                    break;
+                case "ks":
+                    sunSufix = "hays";
+                    break;
+                case "ky":
+                    sunSufix = "covington";
+                    break;
+                case "la":
+                    sunSufix = "metairie";
+                    break;
+                case "me":
+                    sunSufix = "augusta";
+                    break;
+                case "md":
+                    sunSufix = "baltimore";
+                    break;
+                case "ma":
+                    sunSufix = "boston";
+                    break;
+                case "mi":
+                    sunSufix = "detroit";
+                    break;
+                case "mn":
+                    sunSufix = "minneapolis";
+                    break;
+                case "ms":
+                    sunSufix = "jackson";
+                    break;
+                case "mo":
+                    sunSufix = "washington-mo";
+                    break;
+                case "mt":
+                    sunSufix = "billings";
+                    break;
+                case "ne":
+                    sunSufix = "omaha";
+                    break;
+                case "nv":
+                    sunSufix = "las-vegas";
+                    break;
+                case "nh":
+                    sunSufix = "berlin";
+                    break;
+                case "nj":
+                    sunSufix = "atlantic-city";
+                    break;
+                case "nm":
+                    sunSufix = "farmington";
+                    break;
+                case "ny":
+                    sunSufix = "new-york";
+                    break;
+                case "nc":
+                    sunSufix = "charlotte";
+                    break;
+                case "nd":
+                    sunSufix = "bismarck";
+                    break;
+                case "oh":
+                    sunSufix = "cleveland";
+                    break;
+                case "ok":
+                    sunSufix = "oklahoma-city";
+                    break;
+                case "or":
+                    sunSufix = "coos-bay";
+                    break;
+                case "pa":
+                    sunSufix = "lancaster-pa";
+                    break;
+                case "ri":
+                    sunSufix = "providence";
+                    break;
+                case "sc":
+                    sunSufix = "florence";
+                    break;
+                case "sd":
+                    sunSufix = "aberdeen";
+                    break;
+                case "tn":
+                    sunSufix = "memphis";
+                    break;
+                case "tx":
+                    sunSufix = "mansfield";
+                    break;
+                case "ut":
+                    sunSufix = "parowan";
+                    break;
+                case "vt":
+                    sunSufix = "burlington";
+                    break;
+                case "va":
+                    sunSufix = "norfolk";
+                    break;
+                case "wa":
+                    sunSufix = "bellevue";
+                    break;
+                case "wv":
+                    sunSufix = "clarksburg";
+                    break;
+                case "wi":
+                    sunSufix = "neenah";
+                    break;
+                case "wy":
+                    sunSufix = "jackson-wy";
+                    break;
+                default:
+                    break;
+            }
+        }
 
+        //returns true if wallpaper was updated and both update images exist at valid paths, else returns false
         public Boolean UpdateWallpaper()
         {
             if (CheckTime() == timestate.Night)
@@ -118,16 +325,22 @@ namespace ScreenFlow
             }
             return false;
         }
+
+
         public static void SetWallpaper(String path)
         {
             SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, path,
                 SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
         }
+
+        //checks whether it is day or night
         public timestate CheckTime()
         {
             if (DateTime.Now.TimeOfDay.CompareTo(Properties.Settings.Default.sunrise) < 0 || DateTime.Now.TimeOfDay.CompareTo(Properties.Settings.Default.sunset) > 0) return timestate.Night;
             else return timestate.Day;
         }
+
+        //calculates interval until the next time wallpaper should be changed
         public TimeSpan IntervalUntilNextChange()
         {
 
@@ -145,6 +358,8 @@ namespace ScreenFlow
                 else return (Properties.Settings.Default.sunrise - DateTime.Now.TimeOfDay);
             }
         }
+
+        //checks connection
         public static bool CheckForInternetConnection()
         {
             try
@@ -162,6 +377,8 @@ namespace ScreenFlow
                 return false;
             }
         }
+
+        //Run at startup helpers
         private static void CreateShortcut()
         {
             WshShell shell = new WshShell();
@@ -170,9 +387,18 @@ namespace ScreenFlow
             shortcut.Description = "Shortcut";
             shortcut.TargetPath = System.Windows.Forms.Application.StartupPath + @"\ScreenFlow.exe";
             shortcut.Save();
-            StateArray.states.ElementAt(6);
         }
-        static TimeSpan stringToTimeSpan(String time)
+        public static void DeleteShortcut()
+        {
+            if (System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\ScreenFlow.lnk"))
+            {
+                System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\ScreenFlow.lnk");
+            }
+
+        }
+
+        //Parses internet data into a TimeSpan
+        static TimeSpan StringToTimeSpan(String time)
         {
 
             int hours = int.Parse(time.Substring(0, time.IndexOf(':')));
@@ -182,9 +408,20 @@ namespace ScreenFlow
             TimeSpan t = new TimeSpan(hours, minutes, 0);
             return t;
         }
+
+        public void ShowApp(object sender, EventArgs args)
+        {
+            this.Show();
+            this.WindowState = WindowState.Normal;
+            Thread.Sleep(100);
+            ni.Visible = false;
+        }
+
         #endregion
 
         #region timerTrigers
+
+        //updates the wallpaper at sunrise/sunset
         private void WallpaperTimerElapsed(object source, ElapsedEventArgs e)
         {
             try
@@ -198,24 +435,26 @@ namespace ScreenFlow
             }
 
         }
+
+        //Updates sunrise/sunset times once a day, attempts to update every 5 minutes if there is no internet connection
         private void WebTimerElapsed(object source, ElapsedEventArgs e)
         {
             if (CheckForInternetConnection())
             {
                 try
                 {
-                    var doc = Dcsoup.Parse(new Uri("http://www.timeanddate.com/sun/usa/new-york"), 5000);
-                    // <span itemprop="ratingValue">86</span>
+                    var doc = Dcsoup.Parse(new Uri(sunPrefix + sunSufix), 5000);
                     var ratingSpan = doc.Select("span[class=three]");
                     var test = ratingSpan.ToArray();
-                    if (Properties.Settings.Default.sunrise != stringToTimeSpan(test[0].Text))
+                    if (Properties.Settings.Default.sunrise != StringToTimeSpan(test[0].Text))
                     {
-                        Properties.Settings.Default.sunrise = stringToTimeSpan(test[0].Text);
-                        Properties.Settings.Default.sunset = stringToTimeSpan(test[1].Text);
+                        Properties.Settings.Default.sunrise = StringToTimeSpan(test[0].Text);
+                        Properties.Settings.Default.sunset = StringToTimeSpan(test[1].Text);
                         Properties.Settings.Default.Save();
                         wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
                         UpdateWallpaper();
                     }
+                    updateTime = System.DateTime.Now;
                     webReloadTimer.Interval = TimeSpan.FromDays(1).TotalMilliseconds;
                 }
                 catch (Exception ex)
@@ -232,24 +471,62 @@ namespace ScreenFlow
         #endregion
 
         #region buttons
+
+        //Save Settings
         private void SaveChangesButton_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.nightImage = Image2Box.Text;
             Properties.Settings.Default.dayImage = Image1Box.Text;
+
+            //state validation
+            if (Properties.Settings.Default.state != Image3Box.Text)
+            {
+                if (!StateArray.Abbreviations().Contains(Image3Box.Text))
+                {
+                    System.Windows.MessageBox.Show("Invalid State Abbreviation");
+                    return;
+                }
+                else
+                {
+                    StateMapper(Image3Box.Text);
+                    webReloadTimer.Interval = 1;
+                }
+            }
             Properties.Settings.Default.state = Image3Box.Text;
             Properties.Settings.Default.Save();
+
+            //Controls running application on startup
+            if (StartupBox.IsChecked.Value)
+            {
+                CreateShortcut();
+                Properties.Settings.Default.runAtStart = true;
+            }
+            else
+            {
+                DeleteShortcut();
+                Properties.Settings.Default.runAtStart = false;
+            }
+
+            //Makes sure image paths are valid
             if (UpdateWallpaper())
             {
+                //Copies images to application folder
                 try
                 {
-                    if (!System.IO.Directory.Exists(System.Windows.Forms.Application.StartupPath + @"\Wallpapers"))
+                    if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\ScreenFlow\"))
                     {
-                        System.IO.Directory.CreateDirectory(System.Windows.Forms.Application.StartupPath + @"\Wallpapers");
+                        System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\ScreenFlow\");
                     }
-                    System.IO.File.Copy(Properties.Settings.Default.dayImage, System.Windows.Forms.Application.StartupPath + @"\Wallpapers\" + System.IO.Path.GetFileName(Properties.Settings.Default.dayImage), true);
-                    System.IO.File.Copy(Properties.Settings.Default.nightImage, System.Windows.Forms.Application.StartupPath + @"\Wallpapers\" + System.IO.Path.GetFileName(Properties.Settings.Default.nightImage), true);
-                    Properties.Settings.Default.nightImage = System.Windows.Forms.Application.StartupPath + @"\Wallpapers\" + System.IO.Path.GetFileName(Properties.Settings.Default.nightImage);
-                    Properties.Settings.Default.dayImage = System.Windows.Forms.Application.StartupPath + @"\Wallpapers\" + System.IO.Path.GetFileName(Properties.Settings.Default.dayImage);
+                    if (Properties.Settings.Default.dayImage != Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\ScreenFlow\" + System.IO.Path.GetFileName(Properties.Settings.Default.dayImage))
+                    {
+                        System.IO.File.Copy(Properties.Settings.Default.dayImage, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\ScreenFlow\" + System.IO.Path.GetFileName(Properties.Settings.Default.dayImage), true);
+                        Properties.Settings.Default.dayImage = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\ScreenFlow\" + System.IO.Path.GetFileName(Properties.Settings.Default.dayImage);
+                    }
+                    if (Properties.Settings.Default.nightImage != Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\ScreenFlow\" + System.IO.Path.GetFileName(Properties.Settings.Default.nightImage))
+                    {
+                        System.IO.File.Copy(Properties.Settings.Default.nightImage, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\ScreenFlow\" + System.IO.Path.GetFileName(Properties.Settings.Default.nightImage), true);
+                        Properties.Settings.Default.nightImage = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\ScreenFlow\" + System.IO.Path.GetFileName(Properties.Settings.Default.nightImage);
+                    }
                     Properties.Settings.Default.Save();
                     Image2Box.Text = Properties.Settings.Default.nightImage;
                     Image1Box.Text = Properties.Settings.Default.dayImage;
@@ -270,8 +547,6 @@ namespace ScreenFlow
             // Create OpenFileDialog 
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-
-
             // Set filter for file extension and default file extension 
             dlg.Filter = "Image Files |*.jpg;*.jpeg;*.png;*.bmp";
 
@@ -283,7 +558,6 @@ namespace ScreenFlow
             // Get the selected file name and display in a TextBox 
             if (result == true)
             {
-                // Open document 
                 string filename = dlg.FileName;
                 Image2Box.Text = @filename;
             }
@@ -295,21 +569,15 @@ namespace ScreenFlow
             // Create OpenFileDialog 
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-
-
             // Set filter for file extension and default file extension 
             dlg.Filter = "Image Files |*.jpg;*.jpeg;*.png;*.bmp";
-
-
 
             // Display OpenFileDialog by calling ShowDialog method 
             Nullable<bool> result = dlg.ShowDialog();
 
-
             // Get the selected file name and display in a TextBox 
             if (result == true)
             {
-                // Open document 
                 string filename = dlg.FileName;
                 Image1Box.Text = @filename;
             }
@@ -325,7 +593,7 @@ namespace ScreenFlow
         static StateArray()
         {
             states = new List<US_State>(50);
-            states.Add(new US_State("AL", "Alabasa"));
+            states.Add(new US_State("AL", "Alabama"));
             states.Add(new US_State("AK", "Alaska"));
             states.Add(new US_State("AZ", "Arizona"));
             states.Add(new US_State("AR", "Arkansas"));
@@ -378,14 +646,14 @@ namespace ScreenFlow
             states.Add(new US_State("WY", "Wyoming"));
         }
 
-        public static string[] Abbreviations()
+        public static List<string> Abbreviations()
         {
             List<string> abbrevList = new List<string>(states.Count);
             foreach (var state in states)
             {
                 abbrevList.Add(state.Abbreviations);
             }
-            return abbrevList.ToArray();
+            return abbrevList;
         }
 
         public static string[] Names()

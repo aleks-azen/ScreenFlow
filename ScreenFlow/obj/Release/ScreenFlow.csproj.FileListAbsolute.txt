@@ -13,3 +13,20 @@ E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Release
 E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.csproj.GenerateResource.Cache
 E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.exe
 E:\Users\Documents\Visual Studio 2015\Projects\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.pdb
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\bin\Release\ScreenFlow.exe.config
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\Interop.IWshRuntimeLibrary.dll
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.csproj.ResolveComReference.cache
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.exe
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.pdb
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\bin\Release\ScreenFlow.exe
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\bin\Release\ScreenFlow.pdb
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\bin\Release\Supremes.dll
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\MainWindow.g.cs
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\App.g.cs
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow_MarkupCompile.cache
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow_MarkupCompile.lref
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\MainWindow.baml
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.g.resources
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.Properties.Resources.resources
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.csproj.GenerateResource.Cache
+E:\Users\Documents\GitHub\ScreenFlow\ScreenFlow\obj\Release\ScreenFlow.csprojResolveAssemblyReference.cache

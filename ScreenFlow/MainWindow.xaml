@@ -4,24 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScreenFlow"
-        mc:Ignorable="d"
-        Title="ScreenFlow" Height="308.666" Width="556.373" >
+        Title="ScreenFlow" Height="308.666" Width="556.373" ResizeMode="CanMinimize">
     <StackPanel>
         <Grid Height="104">
             <Label x:Name="Image1Label" Content="Day Image" Margin="0,0,466,67" />
 
-            <TextBox x:Name="Image1Box" Text="Enter Day Image Path" TextWrapping="Wrap" Margin="0,37,200,48" UndoLimit="99" />
-            <Button x:Name="Image1Button" Content="Browse" HorizontalAlignment="Left" Margin="373,37,0,0" VerticalAlignment="Top" Width="80" Height="19" Click="Image1Button_Click"/>
+            <TextBox x:Name="Image1Box" Text="Enter Day Image Path" TextWrapping="Wrap" Margin="0,37,127,48" UndoLimit="99" />
+            <Button x:Name="Image1Button" Content="Browse" HorizontalAlignment="Left" Margin="447,37,0,0" VerticalAlignment="Top" Width="80" Height="19" Click="Image1Button_Click"/>
         </Grid>
         <Grid Height="100">
             <Label x:Name="Image2Label" Content="Night Image" Margin="0,0,464,67" />
 
-            <TextBox x:Name="Image2Box" Text="Enter Night Image Path" TextWrapping="Wrap" Margin="0,38,200,44" />
-            <Button x:Name="Image2Button" Content="Browse" HorizontalAlignment="Left" Margin="373,38,0,0" VerticalAlignment="Top" Width="80" Height="18" Click="Image2Button_Click"/>
+            <TextBox x:Name="Image2Box" Text="Enter Night Image Path" TextWrapping="Wrap" Margin="0,38,127,44" />
+            <Button x:Name="Image2Button" Content="Browse" HorizontalAlignment="Left" Margin="447,38,0,0" VerticalAlignment="Top" Width="80" Height="18" Click="Image2Button_Click"/>
         </Grid>
         <Grid>
             <Label x:Name="StateLabel" Content="Enter State Abbreviation (E.G: NY): " Margin="0,0,311,0" />
-            <TextBox x:Name="Image3Box" Text="NY" Height="23" TextWrapping="Wrap" Margin="205,4,300,-1"/>
+            <TextBox x:Name="Image3Box" Text="NY" Height="23" TextWrapping="Wrap" Margin="205,4,305,-1" CharacterCasing="Upper" MaxLength="2"/>
+            <CheckBox x:Name="StartupBox" Content="Run at Startup" HorizontalAlignment="Left" Margin="432,6,0,0" VerticalAlignment="Top" Width="108"/>
 
 
         </Grid>

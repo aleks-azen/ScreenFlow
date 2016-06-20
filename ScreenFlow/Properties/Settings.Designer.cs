@@ -82,5 +82,17 @@ namespace ScreenFlow.Properties {
                 this["state"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool runAtStart {
+            get {
+                return ((bool)(this["runAtStart"]));
+            }
+            set {
+                this["runAtStart"] = value;
+            }
+        }
     }
 }
