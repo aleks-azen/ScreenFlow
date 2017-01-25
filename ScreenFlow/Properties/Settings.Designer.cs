@@ -73,13 +73,13 @@ namespace ScreenFlow.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ny")]
-        public string state {
+        [global::System.Configuration.DefaultSettingValueAttribute("10025")]
+        public string zipCode {
             get {
-                return ((string)(this["state"]));
+                return ((string)(this["zipCode"]));
             }
             set {
-                this["state"] = value;
+                this["zipCode"] = value;
             }
         }
         
@@ -92,6 +92,30 @@ namespace ScreenFlow.Properties {
             }
             set {
                 this["runAtStart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40.545237")]
+        public string lat {
+            get {
+                return ((string)(this["lat"]));
+            }
+            set {
+                this["lat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-74.180443")]
+        public string lng {
+            get {
+                return ((string)(this["lng"]));
+            }
+            set {
+                this["lng"] = value;
             }
         }
     }

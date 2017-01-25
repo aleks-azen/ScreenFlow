@@ -95,7 +95,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -119,6 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\1466070757_My-Computer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coords.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\completezip.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

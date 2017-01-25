@@ -14,11 +14,17 @@
     <Setting Name="nightImage" Type="System.String" Scope="User">
       <Value Profile="(Default)">Enter Nightime Image Path</Value>
     </Setting>
-    <Setting Name="state" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ny</Value>
+    <Setting Name="zipCode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10025</Value>
     </Setting>
     <Setting Name="runAtStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="lat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">40.545237</Value>
+    </Setting>
+    <Setting Name="lng" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-74.180443</Value>
     </Setting>
   </Settings>
 </SettingsFile>

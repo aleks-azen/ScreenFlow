@@ -47,6 +47,7 @@ namespace ScreenFlow
         public NotifyIcon ni = new NotifyIcon();
         public System.Windows.Forms.ContextMenuStrip iconMenu;
         public DateTime updateTime = new DateTime(1, 1, 1);
+        public string streamData = "sssssss,";
 
         public MainWindow()
         {
@@ -59,7 +60,7 @@ namespace ScreenFlow
 
             //initializations
             UpdateWallpaper();
-            StateMapper(Properties.Settings.Default.state);
+            //StateMapper(Properties.Settings.Default.zipCode);
             wallpaperUpdateTimer.Elapsed += new ElapsedEventHandler(WallpaperTimerElapsed);
             wallpaperUpdateTimer.AutoReset = false;
             wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
@@ -139,170 +140,7 @@ namespace ScreenFlow
             base.OnStateChanged(e);
         }
         #region helpers
-        public void StateMapper(string stateAbbreviation)
-        {
-            stateAbbreviation = stateAbbreviation.ToLower();
-            switch (stateAbbreviation)
-            {
-                case "al":
-                    sunSufix = "birmingham";
-                    break;
-                case "ak":
-                    sunSufix = "kenai";
-                    break;
-                case "az":
-                    sunSufix = "wellton";
-                    break;
-                case "ar":
-                    sunSufix = "little-rock";
-                    break;
-                case "ca":
-                    sunSufix = "hollywood";
-                    break;
-                case "co":
-                    sunSufix = "denver";
-                    break;
-                case "ct":
-                    sunSufix = "new-haven";
-                    break;
-                case "de":
-                    sunSufix = "dover";
-                    break;
-                case "dc":
-                    sunSufix = "washington-dc";
-                    break;
-                case "fl":
-                    sunSufix = "jacksonville-beach";
-                    break;
-                case "ga":
-                    sunSufix = "braselton";
-                    break;
-                case "hi":
-                    sunSufix = "wailuku";
-                    break;
-                case "id":
-                    sunSufix = "lewiston";
-                    break;
-                case "il":
-                    sunSufix = "chicago";
-                    break;
-                case "in":
-                    sunSufix = "elkhart";
-                    break;
-                case "ia":
-                    sunSufix = "des-moines";
-                    break;
-                case "ks":
-                    sunSufix = "hays";
-                    break;
-                case "ky":
-                    sunSufix = "covington";
-                    break;
-                case "la":
-                    sunSufix = "metairie";
-                    break;
-                case "me":
-                    sunSufix = "augusta";
-                    break;
-                case "md":
-                    sunSufix = "baltimore";
-                    break;
-                case "ma":
-                    sunSufix = "boston";
-                    break;
-                case "mi":
-                    sunSufix = "detroit";
-                    break;
-                case "mn":
-                    sunSufix = "minneapolis";
-                    break;
-                case "ms":
-                    sunSufix = "jackson";
-                    break;
-                case "mo":
-                    sunSufix = "washington-mo";
-                    break;
-                case "mt":
-                    sunSufix = "billings";
-                    break;
-                case "ne":
-                    sunSufix = "omaha";
-                    break;
-                case "nv":
-                    sunSufix = "las-vegas";
-                    break;
-                case "nh":
-                    sunSufix = "berlin";
-                    break;
-                case "nj":
-                    sunSufix = "atlantic-city";
-                    break;
-                case "nm":
-                    sunSufix = "farmington";
-                    break;
-                case "ny":
-                    sunSufix = "new-york";
-                    break;
-                case "nc":
-                    sunSufix = "charlotte";
-                    break;
-                case "nd":
-                    sunSufix = "bismarck";
-                    break;
-                case "oh":
-                    sunSufix = "cleveland";
-                    break;
-                case "ok":
-                    sunSufix = "oklahoma-city";
-                    break;
-                case "or":
-                    sunSufix = "coos-bay";
-                    break;
-                case "pa":
-                    sunSufix = "lancaster-pa";
-                    break;
-                case "ri":
-                    sunSufix = "providence";
-                    break;
-                case "sc":
-                    sunSufix = "florence";
-                    break;
-                case "sd":
-                    sunSufix = "aberdeen";
-                    break;
-                case "tn":
-                    sunSufix = "memphis";
-                    break;
-                case "tx":
-                    sunSufix = "mansfield";
-                    break;
-                case "ut":
-                    sunSufix = "parowan";
-                    break;
-                case "vt":
-                    sunSufix = "burlington";
-                    break;
-                case "va":
-                    sunSufix = "norfolk";
-                    break;
-                case "wa":
-                    sunSufix = "bellevue";
-                    break;
-                case "wv":
-                    sunSufix = "clarksburg";
-                    break;
-                case "wi":
-                    sunSufix = "neenah";
-                    break;
-                case "wy":
-                    sunSufix = "jackson-wy";
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        //returns true if wallpaper was updated and both update images exist at valid paths, else returns false
+        
         public Boolean UpdateWallpaper()
         {
             if (CheckTime() == timestate.Night)
@@ -326,7 +164,6 @@ namespace ScreenFlow
             return false;
         }
 
-
         public static void SetWallpaper(String path)
         {
             SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, path,
@@ -336,6 +173,7 @@ namespace ScreenFlow
         //checks whether it is day or night
         public timestate CheckTime()
         {
+            if (Properties.Settings.Default.sunrise == Properties.Settings.Default.sunset) return timestate.Day;
             if (DateTime.Now.TimeOfDay.CompareTo(Properties.Settings.Default.sunrise) < 0 || DateTime.Now.TimeOfDay.CompareTo(Properties.Settings.Default.sunset) > 0) return timestate.Night;
             else return timestate.Day;
         }
@@ -398,14 +236,28 @@ namespace ScreenFlow
         }
 
         //Parses internet data into a TimeSpan
+        //static TimeSpan StringToTimeSpan(String time)
+        //{
+
+        //    int hours = int.Parse(time.Substring(0, time.IndexOf(':')));
+        //    time = time.Substring(time.IndexOf(':') + 1);
+        //    int minutes = int.Parse(time.Substring(0, time.IndexOf(' ')));
+        //    if (time.Contains("PM")) hours += 12;
+        //    TimeSpan t = new TimeSpan(hours, minutes, 0);
+        //    return t;
+        //}
         static TimeSpan StringToTimeSpan(String time)
         {
 
             int hours = int.Parse(time.Substring(0, time.IndexOf(':')));
             time = time.Substring(time.IndexOf(':') + 1);
-            int minutes = int.Parse(time.Substring(0, time.IndexOf(' ')));
+            int minutes = int.Parse(time.Substring(0, time.IndexOf(':')));
+            time = time.Substring(time.IndexOf(':') + 1);
+            int seconds = int.Parse(time.Substring(0, time.IndexOf(' ')));
+            if (hours == 12) hours -= 12;
             if (time.Contains("PM")) hours += 12;
-            TimeSpan t = new TimeSpan(hours, minutes, 0);
+            
+            TimeSpan t = new TimeSpan(hours, minutes, seconds);
             return t;
         }
 
@@ -441,21 +293,48 @@ namespace ScreenFlow
         {
             if (CheckForInternetConnection())
             {
+                //try
+                //{
+                //    var doc = Dcsoup.Parse(new Uri(sunPrefix + sunSufix), 5000);
+                //    var ratingSpan = doc.Select("span[class=three]");
+                //    var test = ratingSpan.ToArray();
+                //    if (Properties.Settings.Default.sunrise != StringToTimeSpan(test[0].Text))
+                //    {
+                //        Properties.Settings.Default.sunrise = StringToTimeSpan(test[0].Text);
+                //        Properties.Settings.Default.sunset = StringToTimeSpan(test[1].Text);
+                //        Properties.Settings.Default.Save();
+                //        wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
+                //        UpdateWallpaper();
+                //    }
+                //    updateTime = System.DateTime.Now;
+                //    webReloadTimer.Interval = TimeSpan.FromDays(1).TotalMilliseconds;
+                //}
                 try
                 {
-                    var doc = Dcsoup.Parse(new Uri(sunPrefix + sunSufix), 5000);
-                    var ratingSpan = doc.Select("span[class=three]");
-                    var test = ratingSpan.ToArray();
-                    if (Properties.Settings.Default.sunrise != StringToTimeSpan(test[0].Text))
+
+                    string data;
+                    string queryPrefix = String.Format("http://api.sunrise-sunset.org/json?lat={0}&lng={1}&formatted=1", Properties.Settings.Default.lat, Properties.Settings.Default.lng);
+                    using (var client = new WebClient())
                     {
-                        Properties.Settings.Default.sunrise = StringToTimeSpan(test[0].Text);
-                        Properties.Settings.Default.sunset = StringToTimeSpan(test[1].Text);
+                        data = client.DownloadString(queryPrefix);
+                    }
+                    data = data.Substring(data.IndexOf("sunrise") + "sunrise".Length + 3);
+                    string sunriseTime = data.Substring(0, data.IndexOf("\""));
+                    data = data.Substring(data.IndexOf("sunset") + "sunset".Length + 3);
+                    string sunsetTime = data.Substring(0, data.IndexOf("\""));
+                    if (StringToTimeSpan(sunriseTime) + System.TimeZone.CurrentTimeZone.GetUtcOffset(System.DateTime.Now) != Properties.Settings.Default.sunrise)
+                    {
+                        Properties.Settings.Default.sunrise = StringToTimeSpan(sunriseTime) + System.TimeZone.CurrentTimeZone.GetUtcOffset(System.DateTime.Now);
+                        if (Properties.Settings.Default.sunrise < new TimeSpan(0, 0, 0)) Properties.Settings.Default.sunrise = new TimeSpan(24, 0, 0) + Properties.Settings.Default.sunrise;
+                        Properties.Settings.Default.sunset = StringToTimeSpan(sunsetTime) + System.TimeZone.CurrentTimeZone.GetUtcOffset(System.DateTime.Now);
+                        if (Properties.Settings.Default.sunset < new TimeSpan(0, 0, 0)) Properties.Settings.Default.sunset = new TimeSpan(24, 0, 0) + Properties.Settings.Default.sunset;
                         Properties.Settings.Default.Save();
                         wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
                         UpdateWallpaper();
                     }
                     updateTime = System.DateTime.Now;
                     webReloadTimer.Interval = TimeSpan.FromDays(1).TotalMilliseconds;
+
                 }
                 catch (Exception ex)
                 {
@@ -479,20 +358,45 @@ namespace ScreenFlow
             Properties.Settings.Default.dayImage = Image1Box.Text;
 
             //state validation
-            if (Properties.Settings.Default.state != Image3Box.Text)
+            if (Properties.Settings.Default.zipCode != Image3Box.Text)
             {
-                if (!StateArray.Abbreviations().Contains(Image3Box.Text))
+                using (var sr = new StringReader(Properties.Resources.completezip))
                 {
-                    System.Windows.MessageBox.Show("Invalid State Abbreviation");
-                    return;
-                }
-                else
-                {
-                    StateMapper(Image3Box.Text);
+                    string ziptest = streamData.Substring(0, streamData.IndexOf(','));
+                    for (int i = 0; i <= 5 - ziptest.Length; i++)
+                    {
+                        ziptest = '0' + ziptest;
+                    }
+                    while (ziptest != Image3Box.Text)
+                    {
+                        streamData = sr.ReadLine();
+                        if (streamData == null)
+                        {
+                            System.Windows.MessageBox.Show("Invalid Zip Code");
+                            streamData = "sssssss,";
+                            return;
+                        }
+                        ziptest = streamData.Substring(0, streamData.IndexOf(','));
+
+                        for (int i = 0; i < 5 - ziptest.Length; i++)
+                        {
+                            ziptest = '0' + ziptest;
+                        }
+
+                    }
+                    Properties.Settings.Default.zipCode = Image3Box.Text;
+                    streamData = streamData.Substring(streamData.IndexOf(',') + 1);
+                    Properties.Settings.Default.lat = streamData.Substring(0, streamData.IndexOf(','));
+                    streamData = streamData.Substring(streamData.IndexOf(',') + 1);
+                    Properties.Settings.Default.lng = streamData;
+                    streamData = "sssssss,";
+                    Properties.Settings.Default.Save();
                     webReloadTimer.Interval = 1;
                 }
+
             }
-            Properties.Settings.Default.state = Image3Box.Text;
+
+            Properties.Settings.Default.zipCode = Image3Box.Text;
             Properties.Settings.Default.Save();
 
             //Controls running application on startup
@@ -583,116 +487,118 @@ namespace ScreenFlow
             }
         }
     }
+
+}
     #endregion
 
-    static class StateArray
-    {
+//    static class StateArray
+//    {
 
-        public static List<US_State> states;
+//        public static List<US_State> states;
 
-        static StateArray()
-        {
-            states = new List<US_State>(50);
-            states.Add(new US_State("AL", "Alabama"));
-            states.Add(new US_State("AK", "Alaska"));
-            states.Add(new US_State("AZ", "Arizona"));
-            states.Add(new US_State("AR", "Arkansas"));
-            states.Add(new US_State("CA", "California"));
-            states.Add(new US_State("CO", "Colorado"));
-            states.Add(new US_State("CT", "Connecticut"));
-            states.Add(new US_State("DE", "Delaware"));
-            states.Add(new US_State("DC", "District Of Columbia"));
-            states.Add(new US_State("FL", "Florida"));
-            states.Add(new US_State("GA", "Georgia"));
-            states.Add(new US_State("HI", "Hawaii"));
-            states.Add(new US_State("ID", "Idaho"));
-            states.Add(new US_State("IL", "Illinois"));
-            states.Add(new US_State("IN", "Indiana"));
-            states.Add(new US_State("IA", "Iowa"));
-            states.Add(new US_State("KS", "Kansas"));
-            states.Add(new US_State("KY", "Kentucky"));
-            states.Add(new US_State("LA", "Louisiana"));
-            states.Add(new US_State("ME", "Maine"));
-            states.Add(new US_State("MD", "Maryland"));
-            states.Add(new US_State("MA", "Massachusetts"));
-            states.Add(new US_State("MI", "Michigan"));
-            states.Add(new US_State("MN", "Minnesota"));
-            states.Add(new US_State("MS", "Mississippi"));
-            states.Add(new US_State("MO", "Missouri"));
-            states.Add(new US_State("MT", "Montana"));
-            states.Add(new US_State("NE", "Nebraska"));
-            states.Add(new US_State("NV", "Nevada"));
-            states.Add(new US_State("NH", "New Hampshire"));
-            states.Add(new US_State("NJ", "New Jersey"));
-            states.Add(new US_State("NM", "New Mexico"));
-            states.Add(new US_State("NY", "New York"));
-            states.Add(new US_State("NC", "North Carolina"));
-            states.Add(new US_State("ND", "North Dakota"));
-            states.Add(new US_State("OH", "Ohio"));
-            states.Add(new US_State("OK", "Oklahoma"));
-            states.Add(new US_State("OR", "Oregon"));
-            states.Add(new US_State("PA", "Pennsylvania"));
-            states.Add(new US_State("RI", "Rhode Island"));
-            states.Add(new US_State("SC", "South Carolina"));
-            states.Add(new US_State("SD", "South Dakota"));
-            states.Add(new US_State("TN", "Tennessee"));
-            states.Add(new US_State("TX", "Texas"));
-            states.Add(new US_State("UT", "Utah"));
-            states.Add(new US_State("VT", "Vermont"));
-            states.Add(new US_State("VA", "Virginia"));
-            states.Add(new US_State("WA", "Washington"));
-            states.Add(new US_State("WV", "West Virginia"));
-            states.Add(new US_State("WI", "Wisconsin"));
-            states.Add(new US_State("WY", "Wyoming"));
-        }
+//        static StateArray()
+//        {
+//            states = new List<US_State>(50);
+//            states.Add(new US_State("AL", "Alabama"));
+//            states.Add(new US_State("AK", "Alaska"));
+//            states.Add(new US_State("AZ", "Arizona"));
+//            states.Add(new US_State("AR", "Arkansas"));
+//            states.Add(new US_State("CA", "California"));
+//            states.Add(new US_State("CO", "Colorado"));
+//            states.Add(new US_State("CT", "Connecticut"));
+//            states.Add(new US_State("DE", "Delaware"));
+//            states.Add(new US_State("DC", "District Of Columbia"));
+//            states.Add(new US_State("FL", "Florida"));
+//            states.Add(new US_State("GA", "Georgia"));
+//            states.Add(new US_State("HI", "Hawaii"));
+//            states.Add(new US_State("ID", "Idaho"));
+//            states.Add(new US_State("IL", "Illinois"));
+//            states.Add(new US_State("IN", "Indiana"));
+//            states.Add(new US_State("IA", "Iowa"));
+//            states.Add(new US_State("KS", "Kansas"));
+//            states.Add(new US_State("KY", "Kentucky"));
+//            states.Add(new US_State("LA", "Louisiana"));
+//            states.Add(new US_State("ME", "Maine"));
+//            states.Add(new US_State("MD", "Maryland"));
+//            states.Add(new US_State("MA", "Massachusetts"));
+//            states.Add(new US_State("MI", "Michigan"));
+//            states.Add(new US_State("MN", "Minnesota"));
+//            states.Add(new US_State("MS", "Mississippi"));
+//            states.Add(new US_State("MO", "Missouri"));
+//            states.Add(new US_State("MT", "Montana"));
+//            states.Add(new US_State("NE", "Nebraska"));
+//            states.Add(new US_State("NV", "Nevada"));
+//            states.Add(new US_State("NH", "New Hampshire"));
+//            states.Add(new US_State("NJ", "New Jersey"));
+//            states.Add(new US_State("NM", "New Mexico"));
+//            states.Add(new US_State("NY", "New York"));
+//            states.Add(new US_State("NC", "North Carolina"));
+//            states.Add(new US_State("ND", "North Dakota"));
+//            states.Add(new US_State("OH", "Ohio"));
+//            states.Add(new US_State("OK", "Oklahoma"));
+//            states.Add(new US_State("OR", "Oregon"));
+//            states.Add(new US_State("PA", "Pennsylvania"));
+//            states.Add(new US_State("RI", "Rhode Island"));
+//            states.Add(new US_State("SC", "South Carolina"));
+//            states.Add(new US_State("SD", "South Dakota"));
+//            states.Add(new US_State("TN", "Tennessee"));
+//            states.Add(new US_State("TX", "Texas"));
+//            states.Add(new US_State("UT", "Utah"));
+//            states.Add(new US_State("VT", "Vermont"));
+//            states.Add(new US_State("VA", "Virginia"));
+//            states.Add(new US_State("WA", "Washington"));
+//            states.Add(new US_State("WV", "West Virginia"));
+//            states.Add(new US_State("WI", "Wisconsin"));
+//            states.Add(new US_State("WY", "Wyoming"));
+//        }
 
-        public static List<string> Abbreviations()
-        {
-            List<string> abbrevList = new List<string>(states.Count);
-            foreach (var state in states)
-            {
-                abbrevList.Add(state.Abbreviations);
-            }
-            return abbrevList;
-        }
+//        public static List<string> Abbreviations()
+//        {
+//            List<string> abbrevList = new List<string>(states.Count);
+//            foreach (var state in states)
+//            {
+//                abbrevList.Add(state.Abbreviations);
+//            }
+//            return abbrevList;
+//        }
 
-        public static string[] Names()
-        {
-            List<string> nameList = new List<string>(states.Count);
-            foreach (var state in states)
-            {
-                nameList.Add(state.Name);
-            }
-            return nameList.ToArray();
-        }
+//        public static string[] Names()
+//        {
+//            List<string> nameList = new List<string>(states.Count);
+//            foreach (var state in states)
+//            {
+//                nameList.Add(state.Name);
+//            }
+//            return nameList.ToArray();
+//        }
 
-        public static US_State[] States()
-        {
-            return states.ToArray();
-        }
+//        public static US_State[] States()
+//        {
+//            return states.ToArray();
+//        }
 
-    }
+//    }
 
-    class US_State
-    {
+//    class US_State
+//    {
 
-        public US_State()
-        {
-            Name = null;
-            Abbreviations = null;
-        }
+//        public US_State()
+//        {
+//            Name = null;
+//            Abbreviations = null;
+//        }
 
-        public US_State(string ab, string name)
-        {
-            Name = name;
-            Abbreviations = ab;
-        }
+//        public US_State(string ab, string name)
+//        {
+//            Name = name;
+//            Abbreviations = ab;
+//        }
 
-        public string Name { get; set; }
+//        public string Name { get; set; }
 
-        public string Abbreviations { get; set; }
+//        public string Abbreviations { get; set; }
 
 
 
-    }
-}
+//    }
+//}

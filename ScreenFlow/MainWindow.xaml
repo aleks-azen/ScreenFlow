@@ -19,8 +19,8 @@
             <Button x:Name="Image2Button" Content="Browse" HorizontalAlignment="Left" Margin="447,38,0,0" VerticalAlignment="Top" Width="80" Height="18" Click="Image2Button_Click"/>
         </Grid>
         <Grid>
-            <Label x:Name="StateLabel" Content="Enter State Abbreviation (E.G: NY): " Margin="0,0,311,0" />
-            <TextBox x:Name="Image3Box" Text="NY" Height="23" TextWrapping="Wrap" Margin="205,4,305,-1" CharacterCasing="Upper" MaxLength="2"/>
+            <Label x:Name="StateLabel" Content="Enter Your Zip Code: " Margin="0,0,311,0" />
+            <TextBox x:Name="Image3Box" Text="10025" Height="23" TextWrapping="Wrap" Margin="138,3,346,0" MaxLength="5"/>
             <CheckBox x:Name="StartupBox" Content="Run at Startup" HorizontalAlignment="Left" Margin="432,6,0,0" VerticalAlignment="Top" Width="108"/>
 
 
