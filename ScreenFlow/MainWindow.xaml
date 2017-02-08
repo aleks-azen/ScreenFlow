@@ -9,13 +9,13 @@
         <Grid Height="104">
             <Label x:Name="Image1Label" Content="Day Image" Margin="0,0,466,67" />
 
-            <TextBox x:Name="Image1Box" Text="Enter Day Image Path" TextWrapping="Wrap" Margin="0,37,127,44" UndoLimit="99" />
+            <TextBox x:Name="Image1Box" Text="Enter Day Image Path" TextWrapping="NoWrap" Margin="0,37,127,44" UndoLimit="99" />
             <Button x:Name="Image1Button" Content="Browse" HorizontalAlignment="Left" Margin="447,37,0,0" VerticalAlignment="Top" Width="80" Height="23" Click="Image1Button_Click"/>
         </Grid>
         <Grid Height="100">
             <Label x:Name="Image2Label" Content="Night Image" Margin="0,0,464,67" />
 
-            <TextBox x:Name="Image2Box" Text="Enter Night Image Path" TextWrapping="Wrap" Margin="0,38,127,40" />
+            <TextBox x:Name="Image2Box" Text="Enter Night Image Path" TextWrapping="NoWrap" Margin="0,38,127,40" />
             <Button x:Name="Image2Button" Content="Browse" HorizontalAlignment="Left" Margin="447,38,0,0" VerticalAlignment="Top" Width="80" Height="22" Click="Image2Button_Click"/>
         </Grid>
         <Grid>
