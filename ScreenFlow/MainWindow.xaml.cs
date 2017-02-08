@@ -72,8 +72,8 @@ namespace ScreenFlow
             webReloadTimer.Start();
             InitializeComponent();
 
-            //Rechecks appstatus on wake from sleep because update timers are thrown off sometimes
-            Microsoft.Win32.SystemEvents.PowerModeChanged += delegate (object s, Microsoft.Win32.PowerModeChangedEventArgs e)
+        //Rechecks appstatus on wake from sleep because update timers are thrown off sometimes
+        Microsoft.Win32.SystemEvents.PowerModeChanged += delegate (object s, Microsoft.Win32.PowerModeChangedEventArgs e)
             {
                 if (e.Mode == Microsoft.Win32.PowerModes.Resume)
                 {
@@ -89,6 +89,24 @@ namespace ScreenFlow
                     }
                 }
             };
+
+            Microsoft.Win32.SystemEvents.SessionSwitch += delegate (object sender, Microsoft.Win32.SessionSwitchEventArgs e)
+             {
+                 if (e.Reason == Microsoft.Win32.SessionSwitchReason.SessionUnlock)
+                 {
+                     UpdateWallpaper();
+                     wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
+                     DateTime wakeTime = System.DateTime.Now;
+                     TimeSpan timePassed = wakeTime.Subtract(updateTime);
+                     if (webReloadTimer.Interval > TimeSpan.FromMinutes(5).TotalMilliseconds)
+                     {
+                         if (webReloadTimer.Interval - timePassed.TotalMilliseconds > 0)
+                             webReloadTimer.Interval = webReloadTimer.Interval - timePassed.TotalMilliseconds;
+                         else webReloadTimer.Interval = 1;
+                     }
+                 }
+             };
+
 
             //set initial values
             StartupBox.IsChecked = Properties.Settings.Default.runAtStart;
@@ -293,22 +311,6 @@ namespace ScreenFlow
         {
             if (CheckForInternetConnection())
             {
-                //try
-                //{
-                //    var doc = Dcsoup.Parse(new Uri(sunPrefix + sunSufix), 5000);
-                //    var ratingSpan = doc.Select("span[class=three]");
-                //    var test = ratingSpan.ToArray();
-                //    if (Properties.Settings.Default.sunrise != StringToTimeSpan(test[0].Text))
-                //    {
-                //        Properties.Settings.Default.sunrise = StringToTimeSpan(test[0].Text);
-                //        Properties.Settings.Default.sunset = StringToTimeSpan(test[1].Text);
-                //        Properties.Settings.Default.Save();
-                //        wallpaperUpdateTimer.Interval = IntervalUntilNextChange().TotalMilliseconds;
-                //        UpdateWallpaper();
-                //    }
-                //    updateTime = System.DateTime.Now;
-                //    webReloadTimer.Interval = TimeSpan.FromDays(1).TotalMilliseconds;
-                //}
                 try
                 {
 
